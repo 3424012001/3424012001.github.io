@@ -14,7 +14,7 @@
 <meta property="og:description" content="一.工厂模式1.含义：工厂模式就是将创建对象的语句封装在一个函数里，通过传入参数来创建特定对象，最后返回创建的对象。function createPerson(name,age,job){    &#x2F;&#x2F;封装了一个函数createPerson（），函数里是创建对象的语句，最终返回创建的对象    var o &#x3D; new Object();    o.name &#x3D;">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-04-27T08:16:34.000Z">
-<meta property="article:modified_time" content="2022-04-27T12:54:30.518Z">
+<meta property="article:modified_time" content="2022-04-27T13:44:04.153Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
   
@@ -103,7 +103,11 @@
 <p>  &#x2F;&#x2F;当作普通函数<br>  Person(‘yjf’,20,’enjineer’); &#x2F;&#x2F;添加到window<br>  window.sayName（）；  &#x2F;&#x2F;‘yjf’<br>在全局作用域中调用一个函数时，this对象总是指向Global对象（在浏览器中就是window对象了）。因此，在调用完函数后，可以通过window对象来调用sayName()方法，并且还返回了‘yjf’。</p>
 <p>  &#x2F;&#x2F;在另一个对象的作用域中调用<br>  var o &#x3D; new Object（）；<br>  Person.call(o,(‘yjf’,20,’enjineer’));<br>  o.sayName();  &#x2F;&#x2F;‘yjf’<br>也可以使用call()(或者apply())在某个特殊对象的作用域中调用Person（）函数。这里是在o的作用域中调用的，因此调用后o就有了所有属性和sayName()方法。</p>
 <p>2.优点<br>创建自定义的构造函数意味着将来可以将他的实例标识为一种特定的类型，而这正是构造函数模式胜过工厂模式的地方。</p>
-<p>3.缺点<br>每个方法都要在每个实例中重新创造一遍.在ECMAScript中，函数即对象，因此每定义一个函数，也就是实例化了一个对象。也就是说通过构造函数实例化的多个对象的方法，是多个不同的方法，但它们内部的代码以及实现的功能是相同的，这就造成了一定的资源浪费。<br>而且每个Person实例都包含一个不同的sayName实例，会导致不同的作用域链和标识符解析，但创建sayName新实例的机制还是相同的。因此每个实例上的同名函数是不相等的，以下代码可以证明：<br>alert(person1.sayName &#x3D;&#x3D; person2.sayName);  &#x2F;&#x2F;false</p>
+<p>3.缺点<br>每个方法都要在每个实例中重新创造一遍.在ECMAScript中，函数即对象，因此每定义一个函数，也就是实例化了一个对象。也就是说通过构造函数实例化的多个对象的方法，是多个不同的方法，但它们内部的代码以及实现的功能是相同的，这就造成了一定的资源浪费。<br>而且每个Person实例都包含一个不同的sayName实例，会导致不同的作用域链和标识符解析，但创建sayName新实例的机制还是相同的。因此每个实例上的同名函数是不相等的，以下代码可以证明：<br>   alert(person1.sayName &#x3D;&#x3D; person2.sayName);  &#x2F;&#x2F;false</p>
+<p>三.原型模式<br>1.prototype（原型）属性<br>我们创建的每个函数都有一个prototype（原型）属性，这个属性是个指针，指向一个对象，而这个对象的用途是包含由特定类型的所有实例共享的属性和方法。字面意思来理解的话，那么prototype就是通过调用构造函数而创建的那个对象实例的原型对象。使用原型对象的好处是可以让所有的对象实例共享它所包含的属性和方法。换句话说不必在构造函数中定义对象实例的信息，而是可以将这些信息直接添加到原型对象中。<br>function Person(){<br>}<br>Person.prototype.name &#x3D; ‘yjf’;<br>Person.prototype.age &#x3D; 21;<br>Person.prototype.job &#x3D;’student’;<br>Person.prototype.sayName &#x3D; function(){<br>  alert(this.name);<br>};</p>
+<p>var person1 &#x3D; new Person();<br>person1.sayName();   &#x2F;&#x2F;‘yjf’</p>
+<p>var person2 &#x3D; new Person();<br>person2.sayName();   &#x2F;&#x2F;‘yjf’</p>
+<p>alert(person1.sayName &#x3D; person2.sayName);  &#x2F;&#x2F;true</p>
 
       
     </div>
@@ -117,6 +121,15 @@
   
     
 <nav id="article-nav">
+  
+    <a href="/2022/05/16/js%E7%B1%BB/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          js类
+        
+      </div>
+    </a>
   
   
     <a href="/2022/04/24/yjf-first-blog/" id="article-nav-older" class="article-nav-link-wrap">
@@ -146,7 +159,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a></li></ul>
     </div>
   </div>
 
@@ -157,6 +170,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2022/05/16/js%E7%B1%BB/">js类</a>
+          </li>
         
           <li>
             <a href="/2022/04/27/%E8%87%AA%E5%AE%9A%E4%B9%89%E5%AF%B9%E8%B1%A1/">自定义对象</a>
