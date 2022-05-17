@@ -71,10 +71,10 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-js类" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-js类-1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2022/05/16/js%E7%B1%BB/" class="article-date">
-  <time class="dt-published" datetime="2022-05-16T15:20:07.000Z" itemprop="datePublished">2022-05-16</time>
+    <a href="/2022/05/17/js%E7%B1%BB-1/" class="article-date">
+  <time class="dt-published" datetime="2022-05-17T05:26:13.000Z" itemprop="datePublished">2022-05-17</time>
 </a>
     
   </div>
@@ -85,7 +85,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2022/05/16/js%E7%B1%BB/">js类</a>
+      <a class="p-name article-title" href="/2022/05/17/js%E7%B1%BB-1/">js类</a>
     </h1>
   
 
@@ -93,7 +93,7 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>类可以很方便定义存在于实例上的成员、存在于原型上的成员、以及位于类本身的成员。<br>一.实例、原型和类成员<br>1.实例成员<br>每次通过new操作符调用类标识符时，都会执行类构造函数，在这个函数内部可以为新创建的实例（this）添加‘自有’属性。而且在构造函数执行完毕之后，还可以给实例继续添加新成员。每个实例都对应一个唯一的成员对象，所以所有成员都不会再原型上共享。<br>        class Person {<br>            constructor() {<br>                this.name &#x3D; new String(‘jack’);<br>                this.sayName &#x3D; () &#x3D;&gt; console.log(this.name);<br>                this.nicknames &#x3D; [‘jake’, ‘j-dog’]<br>            }<br>         }<br>         let p1 &#x3D; new Person();<br>         let p2 &#x3D; new Person();</p>
+        <p>类可以很方便定义存在于实例上的成员、存在于原型上的成员、以及位于类本身的成员。<br>一.实例、原型和类成员<br>1.实例成员<br>每次通过new操作符调用类标识符时，都会执行类构造函数，在这个函数内部可以为新创建的实例（this）添加‘自有’属性。而且在构造函数执行完毕之后，还可以给实例继续添加新成员。每个实例都对应一个唯一的成员对象，所以所有成员都不会再原型上共享。<br>         class Person {<br>            constructor() {<br>                this.name &#x3D; new String(‘jack’);<br>                this.sayName &#x3D; () &#x3D;&gt; console.log(this.name);<br>                this.nicknames &#x3D; [‘jake’, ‘j-dog’]<br>            }<br>         }<br>         let p1 &#x3D; new Person();<br>         let p2 &#x3D; new Person();</p>
 <pre><code>     p1.sayName();  //jack
      p2.sayName();  //jack
 
@@ -107,7 +107,7 @@
      p2.sayName();        //j-dog
 
      p1.color = &#39;red&#39;;
-     console.log(p1).color;      //red
+     console.log(p1).color;      //red  
 </code></pre>
 <p>2.原型方法<br>为了在实例间共享方法，类定义语法把放在类块中定义的方法作为原型方法。<br>         class Person {<br>            constructor() {<br>                this.locate &#x3D; () &#x3D;&gt; console.log(‘instance’);<br>            }<br>            locate() {<br>                console.log(‘prototype’);<br>            }<br>         }<br>         let p &#x3D; new Person();<br>         p.locate();    &#x2F;&#x2F;instance<br>         Person.prototype.locate;   &#x2F;&#x2F;prototype</p>
 <p>在类构造函数上定义方法可行，存在于不同实例。可以在类块上定义方法，等同于在原型上定义。<br>注意不能在类块中给原型添加原始值或对象作为成员数据<br>         class Person {<br>            name: ‘jay’<br>         }<br>这样会抛出错误<br>3.静态类方法<br>可以在类上定义静态类方法，这些方法通常用于执行不特定于实例的操作，也不要求存在类的实例。与原型成员类似，每个类上只能有一个静态成员。静态类成员在类定义中使用static关键字作为前缀。在静态成员中，this引用类自身。其他所有约定跟原型成员一样。<br>（constructor中的this指向实例； 定义在原型对象上的this指向原型；static中的this指向类本身）<br>         class Person {<br>            constructor() {<br>                this.locate &#x3D; () &#x3D;&gt; console.log(‘instance’, this);<br>            }<br>            locate() {<br>                console.log(‘prototype’, this);<br>            }<br>            static locate() {<br>                console.log(‘class’, this)<br>            }<br>         }<br>         let p &#x3D; new Person();</p>
@@ -164,7 +164,124 @@
      Bus.identify();  //vehicle
 </code></pre>
 <p>(3)在使用super时要注意一下几点<br>【1】super只能在派生类构造函数和静态方法中使用；<br>【2】调用super()会调用父类构造函数，并将返回的实例赋值给this；<br>【3】super()的行为如同调用构造函数，如果需要给父类构造函数传递参数，则需手动传入。<br>         class Vehicle {<br>            constructor(a) {<br>                this.a &#x3D; a;<br>            }<br>         }<br>         class Bus extends Vehicle {<br>            constructor(a) {<br>                super(a);<br>            }<br>         }<br>         console.log(new Bus(‘123456abc’));   &#x2F;&#x2F;Bus {a : 123456abc}<br>【4】如果派生类没有定义类构造函数，在实例化派生类时会自动调用super()，而且会传入所有传给派生类的参数。<br>         class Vehicle {<br>         constructor(a) {<br>         this.a &#x3D; a;<br>         }<br>         }<br>         class Bus extends Vehicle {}<br>         console.log(new Bus(‘123456abc’));   &#x2F;&#x2F;Bus {a : 123456abc}<br>【5】在类构造函数中，不能在的调用super()之前引用this，否则会报错。<br>【6】如果在派生类中显式定义了构造函数，则要么必须在派生类中调用super()，要么就必须在派生类中返回一个对象。<br>         class Vehicle{}<br>         class Car extends Vehicle {}<br>         class Bus extends Vehicle {<br>            constructor() {<br>                super();<br>             }<br>          }<br>         class Van extends Vehicle {<br>         constructor() {<br>                return {};<br>            }<br>         }<br>         console.log(new Car());   &#x2F;&#x2F;Car{}<br>         console.log(new Bus());   &#x2F;&#x2F;Bus{}<br>         console.log(new Van());   &#x2F;&#x2F; {}</p>
+        
+          <p class="article-more-link">
+            <a href="/2022/05/17/js%E7%B1%BB-1/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/05/17/js%E7%B1%BB-1/" data-id="cl39prgn00000jcun44v4anfa" data-title="js类" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
 
+
+
+  
+    <article id="post-js类" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/05/16/js%E7%B1%BB/" class="article-date">
+  <time class="dt-published" datetime="2022-05-16T15:20:07.000Z" itemprop="datePublished">2022-05-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/05/16/js%E7%B1%BB/">js类</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>类可以很方便定义存在于实例上的成员、存在于原型上的成员、以及位于类本身的成员。<br>一.实例、原型和类成员<br>1.实例成员<br>每次通过new操作符调用类标识符时，都会执行类构造函数，在这个函数内部可以为新创建的实例（this）添加‘自有’属性。而且在构造函数执行完毕之后，还可以给实例继续添加新成员。每个实例都对应一个唯一的成员对象，所以所有成员都不会再原型上共享。<br>         class Person {<br>            constructor() {<br>                this.name &#x3D; new String(‘jack’);<br>                this.sayName &#x3D; () &#x3D;&gt; console.log(this.name);<br>                this.nicknames &#x3D; [‘jake’, ‘j-dog’]<br>            }<br>         }<br>         let p1 &#x3D; new Person();<br>         let p2 &#x3D; new Person();</p>
+<pre><code>     p1.sayName();  //jack
+     p2.sayName();  //jack
+
+     console.log(p1.name === p2.name);             //false
+     console.log(p1.sayName === p2.sayName);       //false
+     console.log(p1.nicknames === p2.nicknames);    //false
+
+     p1.name = p1.nicknames[0];
+     p2.name = p2.nicknames[1];
+     p1.sayName();        //jake
+     p2.sayName();        //j-dog
+
+     p1.color = &#39;red&#39;;
+     console.log(p1).color;      //red  
+</code></pre>
+<p>2.原型方法<br>为了在实例间共享方法，类定义语法把放在类块中定义的方法作为原型方法。<br>         class Person {<br>            constructor() {<br>                this.locate &#x3D; () &#x3D;&gt; console.log(‘instance’);<br>            }<br>            locate() {<br>                console.log(‘prototype’);<br>            }<br>         }<br>         let p &#x3D; new Person();<br>         p.locate();    &#x2F;&#x2F;instance<br>         Person.prototype.locate;   &#x2F;&#x2F;prototype</p>
+<p>在类构造函数上定义方法可行，存在于不同实例。可以在类块上定义方法，等同于在原型上定义。<br>注意不能在类块中给原型添加原始值或对象作为成员数据<br>         class Person {<br>            name: ‘jay’<br>         }<br>这样会抛出错误<br>3.静态类方法<br>可以在类上定义静态类方法，这些方法通常用于执行不特定于实例的操作，也不要求存在类的实例。与原型成员类似，每个类上只能有一个静态成员。静态类成员在类定义中使用static关键字作为前缀。在静态成员中，this引用类自身。其他所有约定跟原型成员一样。<br>（constructor中的this指向实例； 定义在原型对象上的this指向原型；static中的this指向类本身）<br>         class Person {<br>            constructor() {<br>                this.locate &#x3D; () &#x3D;&gt; console.log(‘instance’, this);<br>            }<br>            locate() {<br>                console.log(‘prototype’, this);<br>            }<br>            static locate() {<br>                console.log(‘class’, this)<br>            }<br>         }<br>         let p &#x3D; new Person();</p>
+<pre><code>     p.locate();
+     Person.prototype.locate();
+     Person.locate();
+</code></pre>
+<p>二.类的继承<br>1.继承基础<br>使用extends关键字，就可以继承任何拥有[[construct]]和原型的对象。这意味着不仅可以继承一个类而且还可以继承普通的构造函数（保持向后兼容）。<br>         class Vehicle{};<br>         class bus extends Vehicle{};      &#x2F;&#x2F;继承类<br>         let b &#x3D; new bus();<br>         console.log(b instanceof Vehicle);    &#x2F;&#x2F;ture<br>         console.log(b instanceof bus);        &#x2F;&#x2F;ture</p>
+<pre><code>     function Person()&#123;&#125;
+     class Engineer extends Person&#123;&#125;;    //继承普通构造函数
+     let e = new Engineer();
+     console.log(e instanceof Person);    //ture
+     console.log(e instanceof Engineer);  //ture
+类和原型上定义的方法都会带到派生类中，this的值会反应调用相应方法的实例或类
+     class Vehicle&#123;
+        //定义在类块上即定义在原型上
+        idprototype(id)&#123;
+            console.log(id,this);
+        &#125;
+        //定义在类本身上
+        static idclass(id)&#123;
+            console.log(id),this;
+        &#125;
+     &#125;
+
+     class Bus extends Vehicle&#123;&#125;;
+     let v = new Vehicle;
+     let b = new Bus;
+
+     //  this指向实例
+     b.idprototype(&#39;bus&#39;);   //bus,Bus&#123;&#125; 
+     v.idprototype(&#39;vehicle&#39;);  //Vehicle&#123;&#125;
+
+     //定义在类上的成员的this指向类本身
+     Bus.idclass(&#39;bus&#39;);    //bus,class Bus&#123;&#125;
+     Vehicle.idclass(&#39;vehicle&#39;);  //vehicle,class Vehicle&#123;&#125;
+</code></pre>
+<p>2.super()<br>派生类的方法可以通过super关键字引用他们的原型。这个关键字只能在派生类中使用，而且仅限于类构造函数、实例方法和静态方法内部。<br>（1）在类构造函数中使用super可以调用父类的构造函数<br>        class Vehicle {<br>            constructor() {<br>                this.hasEngine &#x3D; true;<br>            }<br>         }</p>
+<pre><code>     class Bus extends Vehicle &#123;
+        constructor() &#123;
+            super();  //相当于super.constructor()
+            console.log(this instanceof Vehicle); //ture
+            console.log(this);      //Bus &#123;hasEngine : true&#125;
+        &#125;
+     &#125;
+     new Bus();
+</code></pre>
+<p>(2)在派生类的静态方法中可以通过super调用父类上的静态方法<br>         class Vehicle {<br>            static identify() {<br>                console.log(‘vehicle’);<br>            }<br>         }</p>
+<pre><code>     class Bus extends Vehicle&#123;
+        static identify()&#123;
+            super.identify();
+        &#125;
+     &#125;
+     Bus.identify();  //vehicle
+</code></pre>
+<p>(3)在使用super时要注意一下几点<br>【1】super只能在派生类构造函数和静态方法中使用；<br>【2】调用super()会调用父类构造函数，并将返回的实例赋值给this；<br>【3】super()的行为如同调用构造函数，如果需要给父类构造函数传递参数，则需手动传入。<br>         class Vehicle {<br>            constructor(a) {<br>                this.a &#x3D; a;<br>            }<br>         }<br>         class Bus extends Vehicle {<br>            constructor(a) {<br>                super(a);<br>            }<br>         }<br>         console.log(new Bus(‘123456abc’));   &#x2F;&#x2F;Bus {a : 123456abc}<br>【4】如果派生类没有定义类构造函数，在实例化派生类时会自动调用super()，而且会传入所有传给派生类的参数。<br>         class Vehicle {<br>         constructor(a) {<br>         this.a &#x3D; a;<br>         }<br>         }<br>         class Bus extends Vehicle {}<br>         console.log(new Bus(‘123456abc’));   &#x2F;&#x2F;Bus {a : 123456abc}<br>【5】在类构造函数中，不能在的调用super()之前引用this，否则会报错。<br>【6】如果在派生类中显式定义了构造函数，则要么必须在派生类中调用super()，要么就必须在派生类中返回一个对象。<br>         class Vehicle{}<br>         class Car extends Vehicle {}<br>         class Bus extends Vehicle {<br>            constructor() {<br>                super();<br>             }<br>          }<br>         class Van extends Vehicle {<br>         constructor() {<br>                return {};<br>            }<br>         }<br>         console.log(new Car());   &#x2F;&#x2F;Car{}<br>         console.log(new Bus());   &#x2F;&#x2F;Bus{}<br>         console.log(new Van());   &#x2F;&#x2F; {}</p>
+        
+          <p class="article-more-link">
+            <a href="/2022/05/16/js%E7%B1%BB/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
@@ -355,6 +472,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2022/05/17/js%E7%B1%BB-1/">js类</a>
+          </li>
         
           <li>
             <a href="/2022/05/16/js%E7%B1%BB/">js类</a>
