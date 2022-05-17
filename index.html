@@ -71,119 +71,6 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-js类-1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2022/05/17/js%E7%B1%BB-1/" class="article-date">
-  <time class="dt-published" datetime="2022-05-17T05:26:13.000Z" itemprop="datePublished">2022-05-17</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2022/05/17/js%E7%B1%BB-1/">js类</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>类可以很方便定义存在于实例上的成员、存在于原型上的成员、以及位于类本身的成员。<br>一.实例、原型和类成员<br>1.实例成员<br>每次通过new操作符调用类标识符时，都会执行类构造函数，在这个函数内部可以为新创建的实例（this）添加‘自有’属性。而且在构造函数执行完毕之后，还可以给实例继续添加新成员。每个实例都对应一个唯一的成员对象，所以所有成员都不会再原型上共享。<br>         class Person {<br>            constructor() {<br>                this.name &#x3D; new String(‘jack’);<br>                this.sayName &#x3D; () &#x3D;&gt; console.log(this.name);<br>                this.nicknames &#x3D; [‘jake’, ‘j-dog’]<br>            }<br>         }<br>         let p1 &#x3D; new Person();<br>         let p2 &#x3D; new Person();</p>
-<pre><code>     p1.sayName();  //jack
-     p2.sayName();  //jack
-
-     console.log(p1.name === p2.name);             //false
-     console.log(p1.sayName === p2.sayName);       //false
-     console.log(p1.nicknames === p2.nicknames);    //false
-
-     p1.name = p1.nicknames[0];
-     p2.name = p2.nicknames[1];
-     p1.sayName();        //jake
-     p2.sayName();        //j-dog
-
-     p1.color = &#39;red&#39;;
-     console.log(p1).color;      //red  
-</code></pre>
-<p>2.原型方法<br>为了在实例间共享方法，类定义语法把放在类块中定义的方法作为原型方法。<br>         class Person {<br>            constructor() {<br>                this.locate &#x3D; () &#x3D;&gt; console.log(‘instance’);<br>            }<br>            locate() {<br>                console.log(‘prototype’);<br>            }<br>         }<br>         let p &#x3D; new Person();<br>         p.locate();    &#x2F;&#x2F;instance<br>         Person.prototype.locate;   &#x2F;&#x2F;prototype</p>
-<p>在类构造函数上定义方法可行，存在于不同实例。可以在类块上定义方法，等同于在原型上定义。<br>注意不能在类块中给原型添加原始值或对象作为成员数据<br>         class Person {<br>            name: ‘jay’<br>         }<br>这样会抛出错误<br>3.静态类方法<br>可以在类上定义静态类方法，这些方法通常用于执行不特定于实例的操作，也不要求存在类的实例。与原型成员类似，每个类上只能有一个静态成员。静态类成员在类定义中使用static关键字作为前缀。在静态成员中，this引用类自身。其他所有约定跟原型成员一样。<br>（constructor中的this指向实例； 定义在原型对象上的this指向原型；static中的this指向类本身）<br>         class Person {<br>            constructor() {<br>                this.locate &#x3D; () &#x3D;&gt; console.log(‘instance’, this);<br>            }<br>            locate() {<br>                console.log(‘prototype’, this);<br>            }<br>            static locate() {<br>                console.log(‘class’, this)<br>            }<br>         }<br>         let p &#x3D; new Person();</p>
-<pre><code>     p.locate();
-     Person.prototype.locate();
-     Person.locate();
-</code></pre>
-<p>二.类的继承<br>1.继承基础<br>使用extends关键字，就可以继承任何拥有[[construct]]和原型的对象。这意味着不仅可以继承一个类而且还可以继承普通的构造函数（保持向后兼容）。<br>         class Vehicle{};<br>         class bus extends Vehicle{};      &#x2F;&#x2F;继承类<br>         let b &#x3D; new bus();<br>         console.log(b instanceof Vehicle);    &#x2F;&#x2F;ture<br>         console.log(b instanceof bus);        &#x2F;&#x2F;ture</p>
-<pre><code>     function Person()&#123;&#125;
-     class Engineer extends Person&#123;&#125;;    //继承普通构造函数
-     let e = new Engineer();
-     console.log(e instanceof Person);    //ture
-     console.log(e instanceof Engineer);  //ture
-类和原型上定义的方法都会带到派生类中，this的值会反应调用相应方法的实例或类
-     class Vehicle&#123;
-        //定义在类块上即定义在原型上
-        idprototype(id)&#123;
-            console.log(id,this);
-        &#125;
-        //定义在类本身上
-        static idclass(id)&#123;
-            console.log(id),this;
-        &#125;
-     &#125;
-
-     class Bus extends Vehicle&#123;&#125;;
-     let v = new Vehicle;
-     let b = new Bus;
-
-     //  this指向实例
-     b.idprototype(&#39;bus&#39;);   //bus,Bus&#123;&#125; 
-     v.idprototype(&#39;vehicle&#39;);  //Vehicle&#123;&#125;
-
-     //定义在类上的成员的this指向类本身
-     Bus.idclass(&#39;bus&#39;);    //bus,class Bus&#123;&#125;
-     Vehicle.idclass(&#39;vehicle&#39;);  //vehicle,class Vehicle&#123;&#125;
-</code></pre>
-<p>2.super()<br>派生类的方法可以通过super关键字引用他们的原型。这个关键字只能在派生类中使用，而且仅限于类构造函数、实例方法和静态方法内部。<br>（1）在类构造函数中使用super可以调用父类的构造函数<br>        class Vehicle {<br>            constructor() {<br>                this.hasEngine &#x3D; true;<br>            }<br>         }</p>
-<pre><code>     class Bus extends Vehicle &#123;
-        constructor() &#123;
-            super();  //相当于super.constructor()
-            console.log(this instanceof Vehicle); //ture
-            console.log(this);      //Bus &#123;hasEngine : true&#125;
-        &#125;
-     &#125;
-     new Bus();
-</code></pre>
-<p>(2)在派生类的静态方法中可以通过super调用父类上的静态方法<br>         class Vehicle {<br>            static identify() {<br>                console.log(‘vehicle’);<br>            }<br>         }</p>
-<pre><code>     class Bus extends Vehicle&#123;
-        static identify()&#123;
-            super.identify();
-        &#125;
-     &#125;
-     Bus.identify();  //vehicle
-</code></pre>
-<p>(3)在使用super时要注意一下几点<br>【1】super只能在派生类构造函数和静态方法中使用；<br>【2】调用super()会调用父类构造函数，并将返回的实例赋值给this；<br>【3】super()的行为如同调用构造函数，如果需要给父类构造函数传递参数，则需手动传入。<br>         class Vehicle {<br>            constructor(a) {<br>                this.a &#x3D; a;<br>            }<br>         }<br>         class Bus extends Vehicle {<br>            constructor(a) {<br>                super(a);<br>            }<br>         }<br>         console.log(new Bus(‘123456abc’));   &#x2F;&#x2F;Bus {a : 123456abc}<br>【4】如果派生类没有定义类构造函数，在实例化派生类时会自动调用super()，而且会传入所有传给派生类的参数。<br>         class Vehicle {<br>         constructor(a) {<br>         this.a &#x3D; a;<br>         }<br>         }<br>         class Bus extends Vehicle {}<br>         console.log(new Bus(‘123456abc’));   &#x2F;&#x2F;Bus {a : 123456abc}<br>【5】在类构造函数中，不能在的调用super()之前引用this，否则会报错。<br>【6】如果在派生类中显式定义了构造函数，则要么必须在派生类中调用super()，要么就必须在派生类中返回一个对象。<br>         class Vehicle{}<br>         class Car extends Vehicle {}<br>         class Bus extends Vehicle {<br>            constructor() {<br>                super();<br>             }<br>          }<br>         class Van extends Vehicle {<br>         constructor() {<br>                return {};<br>            }<br>         }<br>         console.log(new Car());   &#x2F;&#x2F;Car{}<br>         console.log(new Bus());   &#x2F;&#x2F;Bus{}<br>         console.log(new Van());   &#x2F;&#x2F; {}</p>
-        
-          <p class="article-more-link">
-            <a href="/2022/05/17/js%E7%B1%BB-1/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2022/05/17/js%E7%B1%BB-1/" data-id="cl39prgn00000jcun44v4anfa" data-title="js类" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
     <article id="post-js类" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2022/05/16/js%E7%B1%BB/" class="article-date">
@@ -220,7 +107,7 @@
      p2.sayName();        //j-dog
 
      p1.color = &#39;red&#39;;
-     console.log(p1).color;      //red  
+     console.log(p1.color);      //red  
 </code></pre>
 <p>2.原型方法<br>为了在实例间共享方法，类定义语法把放在类块中定义的方法作为原型方法。<br>         class Person {<br>            constructor() {<br>                this.locate &#x3D; () &#x3D;&gt; console.log(‘instance’);<br>            }<br>            locate() {<br>                console.log(‘prototype’);<br>            }<br>         }<br>         let p &#x3D; new Person();<br>         p.locate();    &#x2F;&#x2F;instance<br>         Person.prototype.locate;   &#x2F;&#x2F;prototype</p>
 <p>在类构造函数上定义方法可行，存在于不同实例。可以在类块上定义方法，等同于在原型上定义。<br>注意不能在类块中给原型添加原始值或对象作为成员数据<br>         class Person {<br>            name: ‘jay’<br>         }<br>这样会抛出错误<br>3.静态类方法<br>可以在类上定义静态类方法，这些方法通常用于执行不特定于实例的操作，也不要求存在类的实例。与原型成员类似，每个类上只能有一个静态成员。静态类成员在类定义中使用static关键字作为前缀。在静态成员中，this引用类自身。其他所有约定跟原型成员一样。<br>（constructor中的this指向实例； 定义在原型对象上的this指向原型；static中的this指向类本身）<br>         class Person {<br>            constructor() {<br>                this.locate &#x3D; () &#x3D;&gt; console.log(‘instance’, this);<br>            }<br>            locate() {<br>                console.log(‘prototype’, this);<br>            }<br>            static locate() {<br>                console.log(‘class’, this)<br>            }<br>         }<br>         let p &#x3D; new Person();</p>
@@ -319,19 +206,21 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>一.工厂模式<br>1.含义：工厂模式就是将创建对象的语句封装在一个函数里，通过传入参数来创建特定对象，最后返回创建的对象。<br>function createPerson(name,age,job){    &#x2F;&#x2F;封装了一个函数createPerson（），函数里是创建对象的语句，最终返回创建的对象<br>    var o &#x3D; new Object();<br>    o.name &#x3D; name;<br>    o.age &#x3D; age;<br>    o.job &#x3D; job;<br>    o.sayName &#x3D; function(){<br>        alery(this.name);<br>    } ;<br>    return o;<br>}</p>
-<p>var person1 &#x3D; createPerson(‘yjf’,20,’enjineer’);  &#x2F;&#x2F;调用createPerson（）函数创建了一个 person1的对象<br>var person2 &#x3D; createPerson(‘zy’,21,’klwfji’);     &#x2F;&#x2F;调用createPerson（）函数创建了一个 person2的对象</p>
+        <p>一.工厂模式<br>1.含义：工厂模式就是将创建对象的语句封装在一个函数里，通过传入参数来创建特定对象，最后返回创建的对象。<br>function createPerson(name,age,job){    &#x2F;&#x2F;封装了一个函数createPerson（），函数里是创建对象的语句，最终返回创建的对象<br>    var o &#x3D; new Object();<br>    o.name &#x3D; name;<br>    o.age &#x3D; age;<br>    o.job &#x3D; job;<br>    o.sayName &#x3D; function(){<br>        alery(this.name);<br>    } ;<br>    return o;<br>    }</p>
+<pre><code>var person1 = createPerson(&#39;yjf&#39;,20,&#39;enjineer&#39;);  //调用createPerson（）函数创建了一个 person1的对象
+var person2 = createPerson(&#39;zy&#39;,21,&#39;klwfji&#39;);     //调用createPerson（）函数创建了一个 person2的对象
+</code></pre>
 <p>2.优点<br>  可以无数次调用这个函数，而每次他都会返回包含三个属性一个方法的对象，解决了创建多个相似对象的问题。<br>3.缺点<br>  没有解决对象识别问题即怎样知道一个对象的类型。</p>
-<p>二.构造函数模式<br>1.构造函数模式的含义<br>(1)ES中的构造函数可以用来创建特定类型的对象，像Object和Array这样的原生构造函数，在运行时会自动出现在执行环境里。此外我们也可以创建自定义的构造函数，从而创建自定义对象类型的属性和方法。<br>function Person(name,age,job){<br>    this.name &#x3D; name;<br>    this.age &#x3D; age;<br>    this.job &#x3D; job;<br>    this.sayName &#x3D; function(){<br>        alery(this.name);<br>    } ;<br>}<br>var person1 &#x3D; new Person(‘yjf’,20,’enjineer’);<br>var person2 &#x3D; new Person(‘zy’,21,’klwfji’);  </p>
-<p>对比工厂模式，构造函数模式有一下几点不同：<br>【1】没有显示的创造对象；<br>【2】直接将属性和方法赋给了this对象；<br>【3】没有return语句；<br>【4】函数名Person第一个字母大写（构造函数都以一个大写字母开头，非构造函数则应该以一个小写字母开头）；<br>（2）构造函数本身也是函数，只不过可以用来创建对象罢了。<br>（3）要创建Person的新实例必须使用 new 操作符。   以这种方式调用构造函数实际上会经历以下四步：<br>                                                                                      【1】创建一个新对象；<br>                                                                                      【2】将构造函数的作用域赋给新对象；<br>                                                                                      【3】执行构造函数中的代码（即给新对象添加属性和方法）<br>                                                                                      【4】返回新对象<br>(4)constructor(构造函数)属性<br>在前面的例子中pers1和person2分别保存着Person的一个不同的实例。这两个对象都有一个constructor(构造函数)属性，该属性指向Person.<br>    alert（person1.constructor &#x3D;&#x3D; Person）；  &#x2F;&#x2F;true<br>    alert（person2.constructor &#x3D;&#x3D; Person）；  &#x2F;&#x2F;true<br>对象的constructor属性最初是用来标识对象类型的，但是提到对象类型还是instanceof操作符比较靠谱。在我们的例子中创建的所有对象即使Object的实例，又是Person的实例。<br>    alert(person1 instanceof Object);     &#x2F;&#x2F;true<br>    alert(person1 instanceof Person);     &#x2F;&#x2F;true<br>    alert(person2 instanceof Object);     &#x2F;&#x2F;true<br>    alert(person2 instanceof Person);     &#x2F;&#x2F;true<br>2.将构造函数当作函数<br>构造函数与其他函数的唯一区别，就在于他们的调用方式不同，任何函数，只要通过new操作符来调用，那他就可以当作构造函数；而任何函数只要不通过new操作费来调用，那他跟普通函数没什么区别。<br>  &#x2F;&#x2F;当构造函数使用<br>  var person &#x3D; new Person (‘yjf’,20,’enjineer’);<br>  person.sayName（）；  &#x2F;&#x2F;‘yjf’<br>这是构造函数的经典用法，即使用new操作符来创建一个新对象</p>
-<p>  &#x2F;&#x2F;当作普通函数<br>  Person(‘yjf’,20,’enjineer’); &#x2F;&#x2F;添加到window<br>  window.sayName（）；  &#x2F;&#x2F;‘yjf’<br>在全局作用域中调用一个函数时，this对象总是指向Global对象（在浏览器中就是window对象了）。因此，在调用完函数后，可以通过window对象来调用sayName()方法，并且还返回了‘yjf’。</p>
-<p>  &#x2F;&#x2F;在另一个对象的作用域中调用<br>  var o &#x3D; new Object（）；<br>  Person.call(o,(‘yjf’,20,’enjineer’));<br>  o.sayName();  &#x2F;&#x2F;‘yjf’<br>也可以使用call()(或者apply())在某个特殊对象的作用域中调用Person（）函数。这里是在o的作用域中调用的，因此调用后o就有了所有属性和sayName()方法。</p>
+<p>二.构造函数模式<br>1.构造函数模式的含义<br>(1)ES中的构造函数可以用来创建特定类型的对象，像Object和Array这样的原生构造函数，在运行时会自动出现在执行环境里。此外我们也可以创建自定义的构造函数，从而创建自定义对象类型的属性和方法。<br>function Person(name,age,job){<br>    this.name &#x3D; name;<br>    this.age &#x3D; age;<br>    this.job &#x3D; job;<br>    this.sayName &#x3D; function(){<br>        alery(this.name);<br>    } ;<br>  }<br>  var person1 &#x3D; new Person(‘yjf’,20,’enjineer’);<br>  var person2 &#x3D; new Person(‘zy’,21,’klwfji’);  </p>
+<p>对比工厂模式，构造函数模式有一下几点不同：<br>【1】没有显示的创造对象；<br>【2】直接将属性和方法赋给了this对象；<br>【3】没有return语句；<br>【4】函数名Person第一个字母大写（构造函数都以一个大写字母开头，非构造函数则应该以一个小写字母开头）；<br>（2）构造函数本身也是函数，只不过可以用来创建对象罢了。<br>（3）要创建Person的新实例必须使用 new 操作符。   以这种方式调用构造函数实际上会经历以下四步：<br>                                                                                      【1】创建一个新对象；<br>                                                                                      【2】将构造函数的作用域赋给新对象；<br>                                                                                      【3】执行构造函数中的代码（即给新对象添加属性和方法）<br>                                                                                      【4】返回新对象<br>(4)constructor(构造函数)属性<br>在前面的例子中pers1和person2分别保存着Person的一个不同的实例。这两个对象都有一个constructor(构造函数)属性，该属性指向Person.<br>      alert（person1.constructor &#x3D;&#x3D; Person）；  &#x2F;&#x2F;true<br>      alert（person2.constructor &#x3D;&#x3D; Person）；  &#x2F;&#x2F;true<br>对象的constructor属性最初是用来标识对象类型的，但是提到对象类型还是instanceof操作符比较靠谱。在我们的例子中创建的所有对象即使Object的实例，又是Person的实例。<br>    alert(person1 instanceof Object);     &#x2F;&#x2F;true<br>    alert(person1 instanceof Person);     &#x2F;&#x2F;true<br>    alert(person2 instanceof Object);     &#x2F;&#x2F;true<br>    alert(person2 instanceof Person);     &#x2F;&#x2F;true<br>2.将构造函数当作函数<br>构造函数与其他函数的唯一区别，就在于他们的调用方式不同，任何函数，只要通过new操作符来调用，那他就可以当作构造函数；而任何函数只要不通过new操作费来调用，那他跟普通函数没什么区别。<br>  &#x2F;&#x2F;当构造函数使用<br>    var person &#x3D; new Person (‘yjf’,20,’enjineer’);<br>    person.sayName（）；  &#x2F;&#x2F;‘yjf’<br>这是构造函数的经典用法，即使用new操作符来创建一个新对象</p>
+<p>  &#x2F;&#x2F;当作普通函数<br>   Person(‘yjf’,20,’enjineer’); &#x2F;&#x2F;添加到window<br>    window.sayName（）；  &#x2F;&#x2F;‘yjf’<br>在全局作用域中调用一个函数时，this对象总是指向Global对象（在浏览器中就是window对象了）。因此，在调用完函数后，可以通过window对象来调用sayName()方法，并且还返回了‘yjf’。</p>
+<p>  &#x2F;&#x2F;在另一个对象的作用域中调用<br>    var o &#x3D; new Object（）；<br>    Person.call(o,(‘yjf’,20,’enjineer’));<br>    o.sayName();  &#x2F;&#x2F;‘yjf’<br>也可以使用call()(或者apply())在某个特殊对象的作用域中调用Person（）函数。这里是在o的作用域中调用的，因此调用后o就有了所有属性和sayName()方法。</p>
 <p>2.优点<br>创建自定义的构造函数意味着将来可以将他的实例标识为一种特定的类型，而这正是构造函数模式胜过工厂模式的地方。</p>
-<p>3.缺点<br>每个方法都要在每个实例中重新创造一遍.在ECMAScript中，函数即对象，因此每定义一个函数，也就是实例化了一个对象。也就是说通过构造函数实例化的多个对象的方法，是多个不同的方法，但它们内部的代码以及实现的功能是相同的，这就造成了一定的资源浪费。<br>而且每个Person实例都包含一个不同的sayName实例，会导致不同的作用域链和标识符解析，但创建sayName新实例的机制还是相同的。因此每个实例上的同名函数是不相等的，以下代码可以证明：<br>   alert(person1.sayName &#x3D;&#x3D; person2.sayName);  &#x2F;&#x2F;false</p>
-<p>三.原型模式<br>1.prototype（原型）属性<br>我们创建的每个函数都有一个prototype（原型）属性，这个属性是个指针，指向一个对象，而这个对象的用途是包含由特定类型的所有实例共享的属性和方法。字面意思来理解的话，那么prototype就是通过调用构造函数而创建的那个对象实例的原型对象。使用原型对象的好处是可以让所有的对象实例共享它所包含的属性和方法。换句话说不必在构造函数中定义对象实例的信息，而是可以将这些信息直接添加到原型对象中。<br>function Person(){<br>}<br>Person.prototype.name &#x3D; ‘yjf’;<br>Person.prototype.age &#x3D; 21;<br>Person.prototype.job &#x3D;’student’;<br>Person.prototype.sayName &#x3D; function(){<br>  alert(this.name);<br>};</p>
-<p>var person1 &#x3D; new Person();<br>person1.sayName();   &#x2F;&#x2F;‘yjf’</p>
-<p>var person2 &#x3D; new Person();<br>person2.sayName();   &#x2F;&#x2F;‘yjf’</p>
-<p>alert(person1.sayName &#x3D; person2.sayName);  &#x2F;&#x2F;true</p>
+<p>3.缺点<br>每个方法都要在每个实例中重新创造一遍.在ECMAScript中，函数即对象，因此每定义一个函数，也就是实例化了一个对象。也就是说通过构造函数实例化的多个对象的方法，是多个不同的方法，但它们内部的代码以及实现的功能是相同的，这就造成了一定的资源浪费。<br>而且每个Person实例都包含一个不同的sayName实例，会导致不同的作用域链和标识符解析，但创建sayName新实例的机制还是相同的。因此每个实例上的同名函数是不相等的，以下代码可以证明：<br>      alert(person1.sayName &#x3D;&#x3D; person2.sayName);  &#x2F;&#x2F;false</p>
+<p>三.原型模式<br>1.prototype（原型）属性<br>我们创建的每个函数都有一个prototype（原型）属性，这个属性是个指针，指向一个对象，而这个对象的用途是包含由特定类型的所有实例共享的属性和方法。字面意思来理解的话，那么prototype就是通过调用构造函数而创建的那个对象实例的原型对象。使用原型对象的好处是可以让所有的对象实例共享它所包含的属性和方法。换句话说不必在构造函数中定义对象实例的信息，而是可以将这些信息直接添加到原型对象中。<br>  function Person(){<br>  }<br>  Person.prototype.name &#x3D; ‘yjf’;<br>  Person.prototype.age &#x3D; 21;<br>  Person.prototype.job &#x3D;’student’;<br>  Person.prototype.sayName &#x3D; function(){<br>   alert(this.name);<br>  };</p>
+<p>  var person1 &#x3D; new Person();<br>  person1.sayName();   &#x2F;&#x2F;‘yjf’</p>
+<p>  var person2 &#x3D; new Person();<br>  person2.sayName();   &#x2F;&#x2F;‘yjf’</p>
+<p>  alert(person1.sayName &#x3D; person2.sayName);  &#x2F;&#x2F;true</p>
 
       
     </div>
@@ -472,10 +361,6 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
-        
-          <li>
-            <a href="/2022/05/17/js%E7%B1%BB-1/">js类</a>
-          </li>
         
           <li>
             <a href="/2022/05/16/js%E7%B1%BB/">js类</a>
