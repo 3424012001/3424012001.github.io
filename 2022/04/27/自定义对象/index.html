@@ -6,15 +6,15 @@
   
   <title>自定义对象 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="对象时js中非常重要的数据结构，下面将介绍怎样理解对象、创建对象和继承。同时也将引出原型和原型链的概念。">
+  <meta name="description" content="对象是js中非常重要的数据结构，下面将介绍怎样理解对象、创建对象和继承。同时也将引出构造函数、原型和原型链的概念。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="自定义对象">
 <meta property="og:url" content="http://example.com/2022/04/27/%E8%87%AA%E5%AE%9A%E4%B9%89%E5%AF%B9%E8%B1%A1/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="对象时js中非常重要的数据结构，下面将介绍怎样理解对象、创建对象和继承。同时也将引出原型和原型链的概念。">
+<meta property="og:description" content="对象是js中非常重要的数据结构，下面将介绍怎样理解对象、创建对象和继承。同时也将引出构造函数、原型和原型链的概念。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-04-27T08:16:34.000Z">
-<meta property="article:modified_time" content="2022-05-17T06:06:59.515Z">
+<meta property="article:modified_time" content="2022-05-17T06:21:57.353Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
   
@@ -95,7 +95,7 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>对象时js中非常重要的数据结构，下面将介绍怎样理解对象、创建对象和继承。同时也将引出原型和原型链的概念。</p>
+        <p>对象是js中非常重要的数据结构，下面将介绍怎样理解对象、创建对象和继承。同时也将引出构造函数、原型和原型链的概念。</p>
 <span id="more"></span>
 <p>一.工厂模式<br>1.含义：工厂模式就是将创建对象的语句封装在一个函数里，通过传入参数来创建特定对象，最后返回创建的对象。<br> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">function createPerson(name,age,job)&#123;    //封装了一个函数createPerson（），函数里是创建对象的语句，最终返回创建的对象</span><br><span class="line">  var o = new Object();</span><br><span class="line">  o.name = name;</span><br><span class="line">  o.age = age;</span><br><span class="line">  o.job = job;</span><br><span class="line">  o.sayName = function()&#123;</span><br><span class="line">      alery(this.name);</span><br><span class="line">  &#125; ;</span><br><span class="line">  return o;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  var person1 = createPerson(&#x27;yjf&#x27;,20,&#x27;enjineer&#x27;);  //调用createPerson（）函数创建了一个 person1的对象</span><br><span class="line">  var person2 = createPerson(&#x27;zy&#x27;,21,&#x27;klwfji&#x27;);     //调用createPerson（）函数创建了一个 person2的对象</span><br></pre></td></tr></table></figure><br>2.优点<br>  可以无数次调用这个函数，而每次他都会返回包含三个属性一个方法的对象，解决了创建多个相似对象的问题。<br>3.缺点<br>  没有解决对象识别问题即怎样知道一个对象的类型。</p>
 <p>二.构造函数模式<br>1.构造函数模式的含义<br>(1)ES中的构造函数可以用来创建特定类型的对象，像Object和Array这样的原生构造函数，在运行时会自动出现在执行环境里。此外我们也可以创建自定义的构造函数，从而创建自定义对象类型的属性和方法。<br> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">function Person(name,age,job)&#123;    </span><br><span class="line">   this.name = name;</span><br><span class="line">   this.age = age;</span><br><span class="line">   this.job = job;</span><br><span class="line">   this.sayName = function()&#123;</span><br><span class="line">       alery(this.name);</span><br><span class="line">   &#125; ;</span><br><span class="line"> &#125;</span><br><span class="line"> var person1 = new Person(&#x27;yjf&#x27;,20,&#x27;enjineer&#x27;);</span><br><span class="line"> var person2 = new Person(&#x27;zy&#x27;,21,&#x27;klwfji&#x27;);  </span><br></pre></td></tr></table></figure></p>

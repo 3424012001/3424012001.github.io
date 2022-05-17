@@ -6,15 +6,15 @@
   
   <title>js类 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="类可以很方便定义存在于实例上的成员、存在于原型上的成员、以及位于类本身的成员。">
+  <meta name="description" content="用ES5来模拟类似于类的行为，每种策略都有自己的问题，也有相应的妥协，所以实现继承的代码也显得非常冗长和混乱。所以ES6新引入的class关键字具有定义类的能力。类可以很方便定义存在于实例上的成员、存在于原型上的成员、以及位于类本身的成员。虽然ES6类表面上看起来可以支持正式的面向对象编程，但实际上他的背后使用的任然是原型和构造函数的概念。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="js类">
 <meta property="og:url" content="http://example.com/2022/05/16/js%E7%B1%BB/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="类可以很方便定义存在于实例上的成员、存在于原型上的成员、以及位于类本身的成员。">
+<meta property="og:description" content="用ES5来模拟类似于类的行为，每种策略都有自己的问题，也有相应的妥协，所以实现继承的代码也显得非常冗长和混乱。所以ES6新引入的class关键字具有定义类的能力。类可以很方便定义存在于实例上的成员、存在于原型上的成员、以及位于类本身的成员。虽然ES6类表面上看起来可以支持正式的面向对象编程，但实际上他的背后使用的任然是原型和构造函数的概念。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-05-16T15:20:07.000Z">
-<meta property="article:modified_time" content="2022-05-17T06:07:02.013Z">
+<meta property="article:modified_time" content="2022-05-17T06:21:58.496Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
   
@@ -95,115 +95,9 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>类可以很方便定义存在于实例上的成员、存在于原型上的成员、以及位于类本身的成员。</p>
+        <p>用ES5来模拟类似于类的行为，每种策略都有自己的问题，也有相应的妥协，所以实现继承的代码也显得非常冗长和混乱。所以ES6新引入的class关键字具有定义类的能力。类可以很方便定义存在于实例上的成员、存在于原型上的成员、以及位于类本身的成员。虽然ES6类表面上看起来可以支持正式的面向对象编程，但实际上他的背后使用的任然是原型和构造函数的概念。</p>
 <span id="more"></span>
-<p>一.实例、原型和类成员<br>1.实例成员<br>每次通过new操作符调用类标识符时，都会执行类构造函数，在这个函数内部可以为新创建的实例（this）添加‘自有’属性。而且在构造函数执行完毕之后，还可以给实例继续添加新成员。每个实例都对应一个唯一的成员对象，所以所有成员都不会再原型上共享。<br>        <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">class Person &#123;</span><br><span class="line">   constructor() &#123;</span><br><span class="line">       this.name = new String(&#x27;jack&#x27;);</span><br><span class="line">       this.sayName = () =&gt; console.log(this.name);</span><br><span class="line">       this.nicknames = [&#x27;jake&#x27;, &#x27;j-dog&#x27;]</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line">let p1 = new Person();</span><br><span class="line">let p2 = new Person();</span><br><span class="line"></span><br><span class="line">p1.sayName();  //jack</span><br><span class="line">p2.sayName();  //jack</span><br><span class="line"></span><br><span class="line">console.log(p1.name === p2.name);             //false</span><br><span class="line">console.log(p1.sayName === p2.sayName);       //false</span><br><span class="line">console.log(p1.nicknames === p2.nicknames);    //false</span><br><span class="line"></span><br><span class="line">p1.name = p1.nicknames[0];</span><br><span class="line">p2.name = p2.nicknames[1];</span><br><span class="line">p1.sayName();        //jake</span><br><span class="line">p2.sayName();        //j-dog</span><br><span class="line"></span><br><span class="line">p1.color = &#x27;red&#x27;;</span><br><span class="line">console.log(p1.color);      //red  </span><br></pre></td></tr></table></figure><br>2.原型方法<br>为了在实例间共享方法，类定义语法把放在类块中定义的方法作为原型方法。<br>         <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class Person &#123;</span><br><span class="line">   constructor() &#123;</span><br><span class="line">       this.locate = () =&gt; console.log(&#x27;instance&#x27;);</span><br><span class="line">   &#125;</span><br><span class="line">   locate() &#123;</span><br><span class="line">       console.log(&#x27;prototype&#x27;);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line">let p = new Person();</span><br><span class="line">p.locate();    //instance</span><br><span class="line">Person.prototype.locate;   //prototype</span><br></pre></td></tr></table></figure></p>
-<p> 在类构造函数上定义方法可行，存在于不同实例。可以在类块上定义方法，等同于在原型上定义。<br> 注意不能在类块中给原型添加原始值或对象作为成员数据<br>         class Person {<br>            name: ‘jay’<br>         }<br>         <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">这样会抛出错误</span><br><span class="line">3.静态类方法</span><br><span class="line">可以在类上定义静态类方法，这些方法通常用于执行不特定于实例的操作，也不要求存在类的实例。与原型成员类似，每个类上只能有一个静态成员。静态类成员在类定义中使用static关键字作为前缀。在静态成员中，this引用类自身。其他所有约定跟原型成员一样。</span><br><span class="line">（constructor中的this指向实例； 定义在原型对象上的this指向原型；static中的this指向类本身）</span><br></pre></td></tr></table></figure><br>         class Person {<br>            constructor() {<br>                this.locate &#x3D; () &#x3D;&gt; console.log(‘instance’, this);<br>            }<br>            locate() {<br>                console.log(‘prototype’, this);<br>            }<br>            static locate() {<br>                console.log(‘class’, this)<br>            }<br>         }<br>         let p &#x3D; new Person();</p>
-<pre><code>     p.locate();
-     Person.prototype.locate();
-     Person.locate();
-     <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">二.类的继承</span><br><span class="line">1.继承基础</span><br><span class="line">使用extends关键字，就可以继承任何拥有[[construct]]和原型的对象。这意味着不仅可以继承一个类而且还可以继承普通的构造函数（保持向后兼容）。</span><br></pre></td></tr></table></figure>
-     class Vehicle&#123;&#125;;
-     class bus extends Vehicle&#123;&#125;;      //继承类
-     let b = new bus();
-     console.log(b instanceof Vehicle);    //ture
-     console.log(b instanceof bus);        //ture
-    
-     function Person()&#123;&#125;
-     class Engineer extends Person&#123;&#125;;    //继承普通构造函数
-     let e = new Engineer();
-     console.log(e instanceof Person);    //ture
-     console.log(e instanceof Engineer);  //ture
-
-类和原型上定义的方法都会带到派生类中，this的值会反应调用相应方法的实例或类
-     class Vehicle&#123;
-        //定义在类块上即定义在原型上
-        idprototype(id)&#123;
-            console.log(id,this);
-        &#125;
-        //定义在类本身上
-        static idclass(id)&#123;
-            console.log(id),this;
-        &#125;
-     &#125;
-
-     class Bus extends Vehicle&#123;&#125;;
-     let v = new Vehicle;
-     let b = new Bus;
-
-     //  this指向实例
-     b.idprototype(&#39;bus&#39;);   //bus,Bus&#123;&#125; 
-     v.idprototype(&#39;vehicle&#39;);  //Vehicle&#123;&#125;
-
-     //定义在类上的成员的this指向类本身
-     Bus.idclass(&#39;bus&#39;);    //bus,class Bus&#123;&#125;
-     Vehicle.idclass(&#39;vehicle&#39;);  //vehicle,class Vehicle&#123;&#125;
-     <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">2.super()</span><br><span class="line">派生类的方法可以通过super关键字引用他们的原型。这个关键字只能在派生类中使用，而且仅限于类构造函数、实例方法和静态方法内部。</span><br><span class="line">（1）在类构造函数中使用super可以调用父类的构造函数</span><br></pre></td></tr></table></figure>
-     class Vehicle &#123;
-        constructor() &#123;
-            this.hasEngine = true;
-        &#125;
-     &#125;
-
-     class Bus extends Vehicle &#123;
-        constructor() &#123;
-            super();  //相当于super.constructor()
-            console.log(this instanceof Vehicle); //ture
-            console.log(this);      //Bus &#123;hasEngine : true&#125;
-        &#125;
-     &#125;
-     new Bus();
-     <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(2)在派生类的静态方法中可以通过super调用父类上的静态方法</span><br></pre></td></tr></table></figure>
-     class Vehicle &#123;
-        static identify() &#123;
-            console.log(&#39;vehicle&#39;);
-        &#125;
-     &#125;
-
-     class Bus extends Vehicle&#123;
-        static identify()&#123;
-            super.identify();
-        &#125;
-     &#125;
-     Bus.identify();  //vehicle
-     <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(3)在使用super时要注意一下几点</span><br><span class="line">【1】super只能在派生类构造函数和静态方法中使用；</span><br><span class="line">【2】调用super()会调用父类构造函数，并将返回的实例赋值给this；</span><br><span class="line">【3】super()的行为如同调用构造函数，如果需要给父类构造函数传递参数，则需手动传入。</span><br></pre></td></tr></table></figure>
-     class Vehicle &#123;
-        constructor(a) &#123;
-            this.a = a;
-        &#125;
-     &#125;
-     class Bus extends Vehicle &#123;
-        constructor(a) &#123;
-            super(a);  
-        &#125;
-     &#125;
-     console.log(new Bus(&#39;123456abc&#39;));   //Bus &#123;a : 123456abc&#125;
-     <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">【4】如果派生类没有定义类构造函数，在实例化派生类时会自动调用super()，而且会传入所有传给派生类的参数。</span><br></pre></td></tr></table></figure>
-     class Vehicle &#123;
-     constructor(a) &#123;
-     this.a = a;
-     &#125;
-     &#125;
-     class Bus extends Vehicle &#123;&#125;
-     console.log(new Bus(&#39;123456abc&#39;));   //Bus &#123;a : 123456abc&#125;
-     <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">【5】在类构造函数中，不能在的调用super()之前引用this，否则会报错。</span><br><span class="line">【6】如果在派生类中显式定义了构造函数，则要么必须在派生类中调用super()，要么就必须在派生类中返回一个对象。</span><br></pre></td></tr></table></figure>
-     class Vehicle&#123;&#125;
-     class Car extends Vehicle &#123;&#125;
-     class Bus extends Vehicle &#123;
-        constructor() &#123;
-            super();  
-         &#125;
-      &#125;
-     class Van extends Vehicle &#123;
-     constructor() &#123;
-            return &#123;&#125;;
-        &#125;
-     &#125; 
-     console.log(new Car());   //Car&#123;&#125;
-     console.log(new Bus());   //Bus&#123;&#125;
-     console.log(new Van());   // &#123;&#125;
-     ```
-</code></pre>
+<p>一.实例、原型和类成员<br>1.实例成员<br>每次通过new操作符调用类标识符时，都会执行类构造函数，在这个函数内部可以为新创建的实例（this）添加‘自有’属性。而且在构造函数执行完毕之后，还可以给实例继续添加新成员。每个实例都对应一个唯一的成员对象，所以所有成员都不会再原型上共享。<br>        <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">class Person &#123;</span><br><span class="line">   constructor() &#123;</span><br><span class="line">       this.name = new String(&#x27;jack&#x27;);</span><br><span class="line">       this.sayName = () =&gt; console.log(this.name);</span><br><span class="line">       this.nicknames = [&#x27;jake&#x27;, &#x27;j-dog&#x27;]</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line">let p1 = new Person();</span><br><span class="line">let p2 = new Person();</span><br><span class="line"></span><br><span class="line">p1.sayName();  //jack</span><br><span class="line">p2.sayName();  //jack</span><br><span class="line"></span><br><span class="line">console.log(p1.name === p2.name);             //false</span><br><span class="line">console.log(p1.sayName === p2.sayName);       //false</span><br><span class="line">console.log(p1.nicknames === p2.nicknames);    //false</span><br><span class="line"></span><br><span class="line">p1.name = p1.nicknames[0];</span><br><span class="line">p2.name = p2.nicknames[1];</span><br><span class="line">p1.sayName();        //jake</span><br><span class="line">p2.sayName();        //j-dog</span><br><span class="line"></span><br><span class="line">p1.color = &#x27;red&#x27;;</span><br><span class="line">console.log(p1.color);      //red  </span><br></pre></td></tr></table></figure><br>2.原型方法<br>为了在实例间共享方法，类定义语法把放在类块中定义的方法作为原型方法。<br>         <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class Person &#123;</span><br><span class="line">   constructor() &#123;</span><br><span class="line">       this.locate = () =&gt; console.log(&#x27;instance&#x27;);</span><br><span class="line">   &#125;</span><br><span class="line">   locate() &#123;</span><br><span class="line">       console.log(&#x27;prototype&#x27;);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line">let p = new Person();</span><br><span class="line">p.locate();    //instance</span><br><span class="line">Person.prototype.locate;   //prototype</span><br></pre></td></tr></table></figure><br>在类构造函数上定义方法可行，存在于不同实例。可以在类块上定义方法，等同于在原型上定义。<br>注意不能在类块中给原型添加原始值或对象作为成员数据<br>         <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">class Person &#123;</span><br><span class="line">   name: &#x27;jay&#x27;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>这样会抛出错误<br>3.静态类方法<br>可以在类上定义静态类方法，这些方法通常用于执行不特定于实例的操作，也不要求存在类的实例。与原型成员类似，每个类上只能有一个静态成员。静态类成员在类定义中使用static关键字作为前缀。在静态成员中，this引用类自身。其他所有约定跟原型成员一样。<br>（constructor中的this指向实例； 定义在原型对象上的this指向原型；static中的this指向类本身）<br>         <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">class Person &#123;</span><br><span class="line">   constructor() &#123;</span><br><span class="line">       this.locate = () =&gt; console.log(&#x27;instance&#x27;, this);</span><br><span class="line">   &#125;</span><br><span class="line">   locate() &#123;</span><br><span class="line">       console.log(&#x27;prototype&#x27;, this);</span><br><span class="line">   &#125;</span><br><span class="line">   static locate() &#123;</span><br><span class="line">       console.log(&#x27;class&#x27;, this)</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line">let p = new Person();</span><br><span class="line"></span><br><span class="line">p.locate();</span><br><span class="line">Person.prototype.locate();</span><br><span class="line">Person.locate();</span><br></pre></td></tr></table></figure><br>二.类的继承<br>1.继承基础<br>使用extends关键字，就可以继承任何拥有[[construct]]和原型的对象。这意味着不仅可以继承一个类而且还可以继承普通的构造函数（保持向后兼容）。<br>         <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class Vehicle&#123;&#125;;</span><br><span class="line">class bus extends Vehicle&#123;&#125;;      //继承类</span><br><span class="line">let b = new bus();</span><br><span class="line">console.log(b instanceof Vehicle);    //ture</span><br><span class="line">console.log(b instanceof bus);        //ture</span><br><span class="line">        </span><br><span class="line">function Person()&#123;&#125;</span><br><span class="line">class Engineer extends Person&#123;&#125;;    //继承普通构造函数</span><br><span class="line">let e = new Engineer();</span><br><span class="line">console.log(e instanceof Person);    //ture</span><br><span class="line">console.log(e instanceof Engineer);  //ture</span><br></pre></td></tr></table></figure><br>类和原型上定义的方法都会带到派生类中，this的值会反应调用相应方法的实例或类<br>         <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">class Vehicle&#123;</span><br><span class="line">   //定义在类块上即定义在原型上</span><br><span class="line">   idprototype(id)&#123;</span><br><span class="line">       console.log(id,this);</span><br><span class="line">   &#125;</span><br><span class="line">   //定义在类本身上</span><br><span class="line">   static idclass(id)&#123;</span><br><span class="line">       console.log(id),this;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Bus extends Vehicle&#123;&#125;;</span><br><span class="line">let v = new Vehicle;</span><br><span class="line">let b = new Bus;</span><br><span class="line"></span><br><span class="line">//  this指向实例</span><br><span class="line">b.idprototype(&#x27;bus&#x27;);   //bus,Bus&#123;&#125; </span><br><span class="line">v.idprototype(&#x27;vehicle&#x27;);  //Vehicle&#123;&#125;</span><br><span class="line"></span><br><span class="line">//定义在类上的成员的this指向类本身</span><br><span class="line">Bus.idclass(&#x27;bus&#x27;);    //bus,class Bus&#123;&#125;</span><br><span class="line">Vehicle.idclass(&#x27;vehicle&#x27;);  //vehicle,class Vehicle&#123;&#125;</span><br></pre></td></tr></table></figure><br>2.super()<br>派生类的方法可以通过super关键字引用他们的原型。这个关键字只能在派生类中使用，而且仅限于类构造函数、实例方法和静态方法内部。<br>（1）在类构造函数中使用super可以调用父类的构造函数<br>         <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">class Vehicle &#123;</span><br><span class="line">   constructor() &#123;</span><br><span class="line">       this.hasEngine = true;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Bus extends Vehicle &#123;</span><br><span class="line">   constructor() &#123;</span><br><span class="line">       super();  //相当于super.constructor()</span><br><span class="line">       console.log(this instanceof Vehicle); //ture</span><br><span class="line">       console.log(this);      //Bus &#123;hasEngine : true&#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line">new Bus();</span><br></pre></td></tr></table></figure><br>(2)在派生类的静态方法中可以通过super调用父类上的静态方法<br>         <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class Vehicle &#123;</span><br><span class="line">   static identify() &#123;</span><br><span class="line">       console.log(&#x27;vehicle&#x27;);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Bus extends Vehicle&#123;</span><br><span class="line">   static identify()&#123;</span><br><span class="line">       super.identify();</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line">Bus.identify();  //vehicle</span><br></pre></td></tr></table></figure><br>(3)在使用super时要注意一下几点<br>【1】super只能在派生类构造函数和静态方法中使用；<br>【2】调用super()会调用父类构造函数，并将返回的实例赋值给this；<br>【3】super()的行为如同调用构造函数，如果需要给父类构造函数传递参数，则需手动传入。<br>         <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class Vehicle &#123;</span><br><span class="line">   constructor(a) &#123;</span><br><span class="line">       this.a = a;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line">class Bus extends Vehicle &#123;</span><br><span class="line">   constructor(a) &#123;</span><br><span class="line">       super(a);  </span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line">console.log(new Bus(&#x27;123456abc&#x27;));   //Bus &#123;a : 123456abc&#125;</span><br></pre></td></tr></table></figure><br>【4】如果派生类没有定义类构造函数，在实例化派生类时会自动调用super()，而且会传入所有传给派生类的参数。<br>         <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">class Vehicle &#123;</span><br><span class="line">constructor(a) &#123;</span><br><span class="line">this.a = a;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">class Bus extends Vehicle &#123;&#125;</span><br><span class="line">console.log(new Bus(&#x27;123456abc&#x27;));   //Bus &#123;a : 123456abc&#125;</span><br></pre></td></tr></table></figure><br>【5】在类构造函数中，不能在的调用super()之前引用this，否则会报错。<br>【6】如果在派生类中显式定义了构造函数，则要么必须在派生类中调用super()，要么就必须在派生类中返回一个对象。<br>         <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">class Vehicle&#123;&#125;</span><br><span class="line">class Car extends Vehicle &#123;&#125;</span><br><span class="line">class Bus extends Vehicle &#123;</span><br><span class="line">   constructor() &#123;</span><br><span class="line">       super();  </span><br><span class="line">    &#125;</span><br><span class="line"> &#125;</span><br><span class="line">class Van extends Vehicle &#123;</span><br><span class="line">constructor() &#123;</span><br><span class="line">       return &#123;&#125;;</span><br><span class="line">   &#125;</span><br><span class="line">&#125; </span><br><span class="line">console.log(new Car());   //Car&#123;&#125;</span><br><span class="line">console.log(new Bus());   //Bus&#123;&#125;</span><br><span class="line">console.log(new Van());   // &#123;&#125;</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
